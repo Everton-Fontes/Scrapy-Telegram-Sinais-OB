@@ -12,7 +12,7 @@ Dentro deste arquivo terá as variáveis APPHASH, APPID, PHONE
 >
 >PHONE = '+55XXXXXXXXXXX'
 
-**Para Obtẽ-la **
+**Para Obte-la**
 
 1. Logue em sua [conta Telegram](https://my.telegram.org/auth) com o número da sua conta de desenvolvedor que irá usar.
 2. Clique em ferramentas de desenvolvimento de API
