@@ -14,7 +14,7 @@ Dentro deste arquivo terá as variáveis APPHASH, APPID, PHONE
 
 **Para Obtẽ-la **
 
-1. Logue em sua (conta Telegram)[https://my.telegram.org/auth] com o número da sua conta de desenvolvedor que irá usar.
+1. Logue em sua [conta Telegram](https://my.telegram.org/auth com o número da sua conta de desenvolvedor que irá usar.
 2. Clique em ferramentas de desenvolvimento de API
 3. Cria e preencha uma aplicação
 4. Não é necessário preencher nenhum url, sommente os campos de titulo e nome pode ser mudado depois
