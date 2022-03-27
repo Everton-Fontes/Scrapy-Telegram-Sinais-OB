@@ -3,6 +3,7 @@ from telethon.tl.types import InputPeerEmpty
 from telethon.tl.functions.messages import GetDialogsRequest
 from config import APIHASH, APIID, PHONE
 import json
+from utils.utils import save_file
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -46,7 +47,7 @@ async def list_all_chats():
     print('Saving Data in chats.json')
     data = [{group.title: group.id}
             for i, group in enumerate(groups) for idx in choose if i == idx]
-    print(json.dumps(data))
+    save_file(data, 'chats', 'json')
 
 
 def run(function):
@@ -54,4 +55,5 @@ def run(function):
         client.loop.run_until_complete(function())
 
 
-run(list_all_chats)
+if __name__ == '__main__':
+    run(list_all_chats)
