@@ -4,6 +4,7 @@ from telethon.tl.functions.messages import GetDialogsRequest
 from config import APIHASH, APIID, PHONE
 import json
 from utils.utils import save_file
+from datetime import datetime
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -45,9 +46,40 @@ async def list_all_chats():
 
     print('You choose', choose)
     print('Saving Data in chats.json')
-    data = [{group.title: group.id}
+    data = [{'title': group.title, 'id': group.id}
             for i, group in enumerate(groups) for idx in choose if i == idx]
     save_file(data, 'chats', 'json')
+
+
+def get_chats_id():
+    try:
+        with open('chats.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print('The file chats.json not exist, please run list_all_chats')
+        return
+
+
+async def get_all_chats_messages():
+    if file := get_chats_id():
+        chat_msg = []
+        for chat in file:
+            print(
+                f'\nMostrando todas mensagens de hoje do grupo {chat["title"]}')
+            messages = await client.get_messages(chat['id'])
+            if messages:
+                for msg in messages:
+                    now = datetime.now()
+                    if msg.date.year == now.year and msg.date.month == now.month and msg.date.day == now.day:
+                        chat_msg.append({chat['title']: msg.message})
+                        print('\n', msg.message)
+                    else:
+                        print('Nenhuma mensagem de hoje para exibir')
+        if chat_msg:
+            print('\nSalvando mensagens em messages.json')
+            save_file(chat_msg, 'messages', 'json')
+        else:
+            print('\nNão foi possível salvar mensagens, nenhuma selecionada')
 
 
 def run(function):
@@ -56,4 +88,4 @@ def run(function):
 
 
 if __name__ == '__main__':
-    run(list_all_chats)
+    run(get_all_chats_messages)
