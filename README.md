@@ -27,3 +27,4 @@ Para esta aplicação você precisará dos módulos nativos, time e datetime e t
 ## Buscando Grupos no Telegram
 Uma vez o client conectado no telegram, você pode ter acesso a todos os chats e grupos.
 Para termos conhecimento dos ids nome dos chats iremos utilizar a função **list_all_chats**
+ao escolher os grupos, estes serão salvos em um arquivo json chamado chats
