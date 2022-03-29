@@ -71,7 +71,8 @@ async def get_all_chats_messages():
                 for msg in messages:
                     now = datetime.now()
                     if msg.date.year == now.year and msg.date.month == now.month and msg.date.day == now.day:
-                        chat_msg.append({chat['title']: msg.message})
+                        chat_msg.append(
+                            {'title': chat['title'], 'message': msg.message})
                         print('\n', msg.message)
                     else:
                         print('Nenhuma mensagem de hoje para exibir')
@@ -82,10 +83,47 @@ async def get_all_chats_messages():
             print('\nNão foi possível salvar mensagens, nenhuma selecionada')
 
 
+def get_messages():
+    try:
+        with open('messages.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print('messages.json not found, please run get_all_chats_messages')
+        return
+
+
+def select_messages():
+    if messages := get_messages():
+        for msg in messages:
+            if 'CALL' in msg['message'] or 'PUT' in msg['message']:
+                msg = msg['message'].split('\n')
+                for i, m in enumerate(msg):
+                    if i >= len(msg)-10:
+                        if 'CALL' in m or 'PUT' in m:
+                            yield m
+                    else:
+                        continue
+
+    else:
+        print("Don't have messages, run get_all_chats_messages")
+        return
+
+
+def split_signal():
+    if signals := select_messages():
+        for signal in signals:
+            if ' -- ' in signal:
+                splited_signal = str(signal).split(' -- ')
+            else:
+                splited_signal = str(signal).split(' ')
+            yield {splited_signal[1]: [splited_signal[0], splited_signal[2]]}
+
+
 def run(function):
     with client:
         client.loop.run_until_complete(function())
 
 
 if __name__ == '__main__':
-    run(get_all_chats_messages)
+    # run(split_signal)
+    print(list(split_signal()))
