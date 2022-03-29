@@ -24,7 +24,24 @@ Dentro deste arquivo terá as variáveis APPHASH, APPID, PHONE
 Para esta aplicação você precisará dos módulos nativos, time e datetime e também do telethon
 >pip install telethon
 
-## Buscando Grupos no Telegram
+## Buscando Chats no Telegram
 Uma vez o client conectado no telegram, você pode ter acesso a todos os chats e grupos.
-Para termos conhecimento dos ids nome dos chats iremos utilizar a função **list_all_chats**
+Para termos conhecimento dos ids nome dos chats iremos utilizar a função >**list_all_chats**
 ao escolher os grupos, estes serão salvos em um arquivo json chamado chats
+
+>with client:
+>    client.loop.run_until_complete(list_all_chats())
+
+## Pegando mensagens dos chats
+Após utilizar a função **list_all_chats** e ter o arquivo chats.json gerado você pode obter as mensagens através da função
+**get_all_chats_messages** ela tem como parâmetro uma variável booleana **today=True**, se verdadeira retornará um arquivo **messages.json** com 20 mensagens de hoje.
+Caso falso retornará um arquivo **mensages.json** com 20 mensagens independente da data.
+
+>with client:
+>    client.loop.run_until_complete(list_all_chats()) # retorna mensagens de hoje
+
+## Função Run
+Como o módulo telethon utiliza funções asyncronas, para facilitar o funcionamento você pode utilizar a função run()
+**Ex.**
+>run(list_all_chats)
+>run(get_all_chats_messages)
