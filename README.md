@@ -38,8 +38,8 @@ Após utilizar a função **list_all_chats** e ter o arquivo chats.json gerado v
 **get_all_chats_messages** ela tem como parâmetro uma variável booleana **today=True**, se verdadeira retornará um arquivo **messages.json** com 20 mensagens de hoje.
 Caso falso retornará um arquivo **mensages.json** com 20 mensagens independente da data.
 
-'''with client:
-    client.loop.run_until_complete(list_all_chats()) # retorna mensagens de hoje'''
+"""with client:
+    client.loop.run_until_complete(list_all_chats()) # retorna mensagens de hoje"""
 
 ## Função Run
 Como o módulo telethon utiliza funções asyncronas, para facilitar o funcionamento você pode utilizar a função run()
