@@ -5,7 +5,6 @@ from config import APIHASH, APIID, PHONE
 import json
 from utils.utils import save_file
 from datetime import datetime
-from signals.signals import get_signals
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -61,22 +60,26 @@ def get_chats_id():
         return
 
 
-async def get_all_chats_messages():
+async def get_all_chats_messages(today=True):
     if file := get_chats_id():
         chat_msg = []
         for chat in file:
             print(
                 f'\nPrinting all messages from today of group {chat["title"]}')
-            messages = await client.get_messages(chat['id'])
+            messages = await client.get_messages(chat['id'], limit=20)
             if messages:
                 for msg in messages:
                     now = datetime.now()
-                    if msg.date.year == now.year and msg.date.month == now.month and msg.date.day == now.day:
+                    if today:
+                        if msg.date.year == now.year and msg.date.month == now.month and msg.date.day == now.day:
+                            chat_msg.append(
+                                {'title': chat['title'], 'message': msg.message})
+                            print('\n', msg.message)
+                        else:
+                            print('No message to display')
+                    else:
                         chat_msg.append(
                             {'title': chat['title'], 'message': msg.message})
-                        print('\n', msg.message)
-                    else:
-                        print('No message to display')
         if chat_msg:
             print('\nSaving messages in messages.json')
             save_file(chat_msg, 'messages', 'json')
@@ -84,12 +87,10 @@ async def get_all_chats_messages():
             print("\nCan't save messages,no one message selected")
 
 
-def run(function):
+def run(function, param):
     with client:
         client.loop.run_until_complete(function())
 
 
 if __name__ == '__main__':
     run(get_all_chats_messages)
-    # for signal in get_signals('json'):
-    #     print(signal)
