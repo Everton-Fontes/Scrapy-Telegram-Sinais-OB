@@ -5,6 +5,7 @@ from config import APIHASH, APIID, PHONE
 import json
 from utils.utils import save_file
 from datetime import datetime
+from signals.signals import get_signals
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -65,7 +66,7 @@ async def get_all_chats_messages():
         chat_msg = []
         for chat in file:
             print(
-                f'\nMostrando todas mensagens de hoje do grupo {chat["title"]}')
+                f'\nPrinting all messages from today of group {chat["title"]}')
             messages = await client.get_messages(chat['id'])
             if messages:
                 for msg in messages:
@@ -75,48 +76,12 @@ async def get_all_chats_messages():
                             {'title': chat['title'], 'message': msg.message})
                         print('\n', msg.message)
                     else:
-                        print('Nenhuma mensagem de hoje para exibir')
+                        print('No message to display')
         if chat_msg:
-            print('\nSalvando mensagens em messages.json')
+            print('\nSaving messages in messages.json')
             save_file(chat_msg, 'messages', 'json')
         else:
-            print('\nNão foi possível salvar mensagens, nenhuma selecionada')
-
-
-def get_messages():
-    try:
-        with open('messages.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print('messages.json not found, please run get_all_chats_messages')
-        return
-
-
-def select_messages():
-    if messages := get_messages():
-        for msg in messages:
-            if 'CALL' in msg['message'] or 'PUT' in msg['message']:
-                msg = msg['message'].split('\n')
-                for i, m in enumerate(msg):
-                    if i >= len(msg)-10:
-                        if 'CALL' in m or 'PUT' in m:
-                            yield m
-                    else:
-                        continue
-
-    else:
-        print("Don't have messages, run get_all_chats_messages")
-        return
-
-
-def split_signal():
-    if signals := select_messages():
-        for signal in signals:
-            if ' -- ' in signal:
-                splited_signal = str(signal).split(' -- ')
-            else:
-                splited_signal = str(signal).split(' ')
-            yield {splited_signal[1]: [splited_signal[0], splited_signal[2]]}
+            print("\nCan't save messages,no one message selected")
 
 
 def run(function):
@@ -125,5 +90,6 @@ def run(function):
 
 
 if __name__ == '__main__':
-    # run(split_signal)
-    print(list(split_signal()))
+    run(get_all_chats_messages)
+    # for signal in get_signals('json'):
+    #     print(signal)

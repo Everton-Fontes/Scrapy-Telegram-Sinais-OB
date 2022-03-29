@@ -1,3 +1,8 @@
 venv/
+signals/
 config.py
 +5512920003537.session
+signals.json
+signals.txt
+chats.json
+messages.json
