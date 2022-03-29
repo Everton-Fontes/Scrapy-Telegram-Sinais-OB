@@ -35,8 +35,8 @@ ao escolher os grupos, estes serão salvos em um arquivo json chamado chats
 
 ## Pegando mensagens dos chats
 Após utilizar a função **list_all_chats** e ter o arquivo chats.json gerado você pode obter as mensagens através da função
-**get_all_chats_messages** ela tem como parâmetro uma variável booleana **today=True**, se verdadeira retornará um arquivo **messages.json** com 20 mensagens de hoje.
-Caso falso retornará um arquivo **mensages.json** com 20 mensagens independente da data.
+**get_all_chats_messages** ela tem como parâmetro uma variável booleana **today=True**, se verdadeira retornará um arquivo **messages.json** com mensagens de hoje.
+Caso falso retornará um arquivo **mensages.json** com mensagens independente da data.
 
 >with client:
 
