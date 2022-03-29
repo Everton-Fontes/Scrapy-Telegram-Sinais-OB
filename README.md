@@ -40,7 +40,7 @@ Caso falso retornará um arquivo **mensages.json** com 20 mensagens independente
 
 >with client:
 
->    client.loop.run_until_complete(list_all_chats()) # retorna mensagens de hoje"""
+>    client.loop.run_until_complete(list_all_chats()) # retorna mensagens de hoje
 
 ## Função Run
 Como o módulo telethon utiliza funções asyncronas, para facilitar o funcionamento você pode utilizar a função run()
