@@ -5,7 +5,6 @@ from config import APIHASH, APIID, PHONE
 import json
 from utils.utils import save_file
 from datetime import datetime
-from signals.signals import save_signals
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -96,4 +95,3 @@ def run(function):
 
 if __name__ == '__main__':
     run(get_all_chats_messages)
-    save_signals('json')
