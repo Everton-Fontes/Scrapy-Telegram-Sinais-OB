@@ -14,6 +14,7 @@ async def list_all_chats():
     chats = []
     groups = []
 
+    # Request of dialogs
     result = await client(GetDialogsRequest(
         offset_date=None,
         offset_id=0,
@@ -87,7 +88,7 @@ async def get_all_chats_messages(today=True):
             print("\nCan't save messages,no one message selected")
 
 
-def run(function, param):
+def run(function):
     with client:
         client.loop.run_until_complete(function())
 
