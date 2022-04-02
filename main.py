@@ -23,6 +23,7 @@ async def list_all_chats():
         hash=0
     ))
     chats.extend(result.chats)
+    # Mecagroup error
     for chat in chats:
         try:
             if True:
@@ -65,10 +66,10 @@ async def get_all_chats_messages(today=True):
     if file := get_chats_id():
         chat_msg = []
         for chat in file:
-            print(
-                f'\nPrinting all messages from today of group {chat["title"]}')
             messages = await client.get_messages(chat['id'], limit=20)
             if messages:
+                print(
+                    f'\nPrinting all messages from group {chat["title"]}')
                 for msg in messages:
                     now = datetime.now()
                     if today:
@@ -77,10 +78,13 @@ async def get_all_chats_messages(today=True):
                                 {'title': chat['title'], 'message': msg.message})
                             print('\n', msg.message)
                         else:
-                            print('No message to display')
+                            print('No message to display from today')
                     else:
                         chat_msg.append(
                             {'title': chat['title'], 'message': msg.message})
+            else:
+                print(
+                    f"\nDon't have messages from group {chat['title']}")
         if chat_msg:
             print('\nSaving messages in messages.json')
             save_file(chat_msg, 'messages', 'json')
@@ -88,10 +92,18 @@ async def get_all_chats_messages(today=True):
             print("\nCan't save messages,no one message selected")
 
 
-def run(function):
+def run(function, param=None):
     with client:
-        client.loop.run_until_complete(function())
+        if param is not None:
+            client.loop.run_until_complete(function(param))
+        else:
+            client.loop.run_until_complete(function())
+
+
+def run_and_save():
+    run(list_all_chats)
+    run(get_all_chats_messages)
 
 
 if __name__ == '__main__':
-    run(get_all_chats_messages)
+    run_and_save()
