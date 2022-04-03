@@ -1,10 +1,12 @@
 from telethon.client import TelegramClient
 from telethon.tl.types import InputPeerEmpty
 from telethon.tl.functions.messages import GetDialogsRequest
-from config import APIHASH, APIID, PHONE
+from config.config import *
+from tgesinaisbot.tgesinais import Tge_Sinais
 import json
 from utils.utils import save_file
 from datetime import datetime
+from signals.signals import *
 
 client = TelegramClient(PHONE, APIID, APIHASH)
 
@@ -82,6 +84,7 @@ async def get_all_chats_messages(today=True):
                     else:
                         chat_msg.append(
                             {'title': chat['title'], 'message': msg.message})
+                        print('\n', msg.message)
             else:
                 print(
                     f"\nDon't have messages from group {chat['title']}")
@@ -102,8 +105,16 @@ def run(function, param=None):
 
 def run_and_save():
     run(list_all_chats)
-    run(get_all_chats_messages)
+    run(get_all_chats_messages, param=False)
+    save_signals()
+
+
+def send_signals():
+    bot = Tge_Sinais()
+    signals = get_signals()
+    message = signal_to_mesage(signals)
+    bot.send_message(message)
 
 
 if __name__ == '__main__':
-    run_and_save()
+    send_signals()

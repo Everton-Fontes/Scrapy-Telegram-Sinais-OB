@@ -1,6 +1,6 @@
 venv/
 signals/
-config.py
+config/config.py
 +5512920003537.session
 signals.json
 signals.txt
